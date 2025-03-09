@@ -12,7 +12,7 @@ module tt_um_drum_goekce (
   parameter unsigned k = 6;
   parameter unsigned n = 8;
   parameter unsigned m = 8;
-  parameter RAM_BYTES = 18;
+  parameter RAM_BYTES = 10;
   localparam addr_bits = $clog2(RAM_BYTES);
 
   wire [addr_bits-1:0] addr = ui_in[addr_bits-1:0];
@@ -21,7 +21,7 @@ module tt_um_drum_goekce (
   assign uio_out = 8'b0;
 
   reg [7:0] ram  [RAM_BYTES - 1:0];
-  reg [3:0] cntr;
+  reg [1:0] cntr;
 
   always @(posedge clk) begin
     if (!rst_n) begin
@@ -31,9 +31,9 @@ module tt_um_drum_goekce (
         ram[i] <= 8'b0;
       end
     end else begin
-      if (cntr != 7) cntr <= cntr + 1;
+      if (cntr != 3) cntr <= cntr + 1;
       //if (addr[4] == 1) begin
-      if (wr_en && addr[4] == 1) begin
+      if (wr_en && addr[3] == 1) begin
         ram[addr] <= uio_in;
       end
       uo_out <= ram[addr];

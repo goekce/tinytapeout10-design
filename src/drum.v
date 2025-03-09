@@ -33,14 +33,14 @@ module tt_um_drum_goekce (
     end else begin
       if (cntr != 7) cntr <= cntr + 1;
       //if (addr[4] == 1) begin
-        if (wr_en && addr[4] == 1) begin
-          ram[addr] <= uio_in;
-        end
-        uo_out <= ram[addr];
-      //end else begin
-       // uo_out <= ram[addr];
-
+      if (wr_en && addr[4] == 1) begin
+        ram[addr] <= uio_in;
       end
+      uo_out <= ram[addr];
+      //end else begin
+      // uo_out <= ram[addr];
+
+      //end
       ram[{cntr, 1'b0}] <= r[7:0];
       ram[{cntr, 1'b1}] <= r[15:8];
     end

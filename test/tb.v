@@ -41,7 +41,7 @@ module tb ();
 `endif
 
   // Replace tt_um_example with your module name:
-  tt_um_drum_goekce user_project (
+  tt_um_drum_goekce #(3, 4, 4) user_project (
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
       .VPWR(VPWR),

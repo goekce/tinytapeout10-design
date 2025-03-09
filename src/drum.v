@@ -9,7 +9,7 @@ module tt_um_drum_goekce (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  parameter unsigned k = 3;
+  parameter unsigned k = 2;
   parameter unsigned n = 8;
   parameter unsigned m = 8;
   parameter RAM_BYTES = 32;

@@ -32,20 +32,15 @@ module tt_um_drum_goekce (
       end
     end else begin
       if (cntr != 3) cntr <= cntr + 1;
-      //if (addr[4] == 1) begin
       if (wr_en && addr[3] == 1) begin
         ram[addr] <= uio_in;
       end
       uo_out <= ram[addr];
-      //end else begin
-      // uo_out <= ram[addr];
 
-      //end
       ram[{cntr, 1'b0}] <= r[7:0];
       ram[{cntr, 1'b1}] <= r[15:8];
     end
   end
-
 
   wire [  (n-1):0] a;
   wire [  (m-1):0] b;
@@ -61,19 +56,13 @@ module tt_um_drum_goekce (
       .r(r)
   );
 
-  //assign uo_out = r;
   assign a = ram[16];
   assign b = ram[17];
 
-  // avoid linter warning about unused pins:
-  //wire _unused_pins = &{ena, clk, rst_n, uio_in};
   wire _unused_pins = &{ena, ui_in[5]};
-  //assign uio_out = r[15:8];
-  //assign uio_oe  = {8{ui_in[6]}};
-  assign uio_out = 0;
-  assign uio_oe  = 0;
-
-endmodule  // tt_um_factory_test
+  assign uio_out = r[15:8];
+  assign uio_oe  = ui_in[6];
+endmodule
 
 module drum (
     a,

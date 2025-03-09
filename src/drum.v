@@ -40,7 +40,7 @@ module tt_um_drum_goekce (
   //  else cnt <= cnt + 1;
 
   assign uo_out = r;
-  assign ui_in  = {b, a};
+  assign {b, a} = ui_in;
   //assign uio_out = ui_in[0] ? cnt : 8'h00;
   //assign uio_oe  = rst_n && ui_in[0] ? 8'hff : 8'h00;
 

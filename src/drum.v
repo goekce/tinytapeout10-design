@@ -9,7 +9,7 @@ module tt_um_drum_goekce (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  parameter k = 6;
+  parameter k = 4;
   parameter n = 4;
   parameter m = 4;
 

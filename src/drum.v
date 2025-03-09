@@ -19,9 +19,9 @@ module tt_um_drum_goekce (
   wire [(n+m)-1:0] r;
 
   drum #(
-      .k,
-      .n,
-      .m
+      .k(k),
+      .n(n),
+      .m(m)
   ) drum_i (
       .a(a),
       .b(b),

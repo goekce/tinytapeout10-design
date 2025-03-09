@@ -59,7 +59,7 @@ module tt_um_drum_goekce (
       .r(r)
   );
 
-  assign uo_out = r;
+  //assign uo_out = r;
   assign a = ram[0];
   assign b = ram[1];
 

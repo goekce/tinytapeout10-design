@@ -11,7 +11,19 @@ module tb ();
     $dumpfile("tb.vcd");
     $dumpvars(0, tb);
     #1;
+    a = 3; b = 2;
+    #1;
+    assert(r == a*b);
+
+    a = 1; b = 2;
+    #1;
+    assert(r == a*b);
+
   end
+
+  wire [  (n-1):0] a;
+  wire [  (m-1):0] b;
+  wire [(n+m)-1:0] r;
 
   // Wire up the inputs and outputs:
   reg clk;
@@ -22,13 +34,14 @@ module tb ();
   wire [7:0] uo_out;
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
+  wire 
 `ifdef GL_TEST
   wire VPWR = 1'b1;
   wire VGND = 1'b0;
 `endif
 
   // Replace tt_um_example with your module name:
-  tt_um_example user_project (
+  tt_um_drum_goekce user_project (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
@@ -46,4 +59,6 @@ module tb ();
       .rst_n  (rst_n)     // not reset
   );
 
+  assign r = uo_out;
+  assign ui_in = {b, a};
 endmodule

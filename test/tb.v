@@ -25,9 +25,9 @@ module tb ();
   parameter unsigned n = 4;
   parameter unsigned m = 4;
 
-  wire [(n-1):0] a;
-  wire [(m-1):0] b;
-  wire [(n+m)-1:0] r;
+  reg [(n-1):0] a;
+  reg [(m-1):0] b;
+  reg [(n+m)-1:0] r;
 
   // Wire up the inputs and outputs:
   reg clk;

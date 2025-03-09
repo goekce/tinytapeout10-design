@@ -10,8 +10,38 @@ module tt_um_drum_goekce (
 );
 
   parameter unsigned k = 3;
-  parameter unsigned n = 4;
-  parameter unsigned m = 4;
+  parameter unsigned n = 8;
+  parameter unsigned m = 8;
+  localparam addr_bits = $clog2(RAM_BYTES);
+
+  wire [addr_bits-1:0] addr = ui_in[addr_bits-1:0];
+  wire wr_en = ui_in[7];
+  assign uio_oe  = 8'b0;  // All bidirectional IOs are inputs
+  assign uio_out = 8'b0;
+
+  reg [7:0] ram  [RAM_BYTES - 1:0];
+  reg [3:0] cntr;
+
+  always @(posedge clk) begin
+    if (!rst_n) begin
+      uo_out <= 8'b0;
+      cntr   <= 0;
+      for (int i = 0; i < RAM_BYTES; i++) begin
+        ram[i] <= 8'b0;
+      end
+    end else begin
+      if (cntr != 14) cntr <= cntr + 2;
+      if (addr[4] == 0) begin
+        if (wr_en) begin
+          ram[addr] <= uio_in;
+        end
+        uo_out <= ram[addr];
+      end else begin
+        ram[cntr]   <= r[7:0];
+        ram[cntr+1] <= r[15:0];
+      end
+    end
+  end
 
 
   wire [  (n-1):0] a;
@@ -28,26 +58,15 @@ module tt_um_drum_goekce (
       .r(r)
   );
 
-  //reg rst_n_i;
-  //reg [7:0] cnt;
-
-  //always @(posedge clk or negedge rst_n)
-  //  if (~rst_n) rst_n_i <= 1'b0;
-  //  else rst_n_i <= 1'b1;
-
-  //always @(posedge clk or negedge rst_n_i)
-  //  if (~rst_n_i) cnt <= 0;
-  //  else cnt <= cnt + 1;
-
   assign uo_out = r;
-  assign {b, a} = ui_in;
-  //assign uio_out = ui_in[0] ? cnt : 8'h00;
-  //assign uio_oe  = rst_n && ui_in[0] ? 8'hff : 8'h00;
+  assign a = ram[0];
+  assign b = ram[1];
 
   // avoid linter warning about unused pins:
-  wire _unused_pins = &{ena, clk, rst_n, uio_in};
-  assign uio_out = 0;
-  assign uio_oe  = 0;
+  //wire _unused_pins = &{ena, clk, rst_n, uio_in};
+  wire _unused_pins = &{ena, uio_in[5]};
+  assign uio_out = r[15:8];
+  assign uio_oe  = ui_in[6];
 
 endmodule  // tt_um_factory_test
 

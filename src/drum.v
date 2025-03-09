@@ -14,9 +14,9 @@ module tt_um_drum_goekce (
   parameter m = 4;
 
 
-  input [(n-1):0] a;
-  input [(m-1):0] b;
-  output [(n+m)-1:0] r;
+  wire [  (n-1):0] a;
+  wire [  (m-1):0] b;
+  wire [(n+m)-1:0] r;
 
   drum #(
       .k,

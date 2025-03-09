@@ -46,6 +46,8 @@ module tt_um_drum_goekce (
 
   // avoid linter warning about unused pins:
   wire _unused_pins = &{ena, clk, rst_n, uio_in};
+  assign uio_out = 0;
+  assign uio_oe  = 0;
 
 endmodule  // tt_um_factory_test
 

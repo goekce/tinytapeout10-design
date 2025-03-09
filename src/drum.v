@@ -1,3 +1,8 @@
+`default_nettype none
+
+// we'll go 100ps here so VCD is saner with ring oscillator
+`timescale 1ns / 100ps
+
 module tt_um_drum_goekce (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output reg  [7:0] uo_out,   // Dedicated outputs
@@ -9,36 +14,38 @@ module tt_um_drum_goekce (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  parameter unsigned k = 6;
-  parameter unsigned n = 8;
-  parameter unsigned m = 8;
-  parameter RAM_BYTES = 10;
-  localparam addr_bits = $clog2(RAM_BYTES);
+  localparam unsigned k = 6;
+  localparam unsigned n = 8;
+  localparam unsigned m = 8;
+  localparam unsigned RAM_BYTES = 10;
+  localparam unsigned addr_bits = $clog2(RAM_BYTES);
+  localparam unsigned last_result_addr = 2 ** (addr_bits - 2) - 1;
+  localparam unsigned result_addr_bits = (addr_bits - 2);
+  localparam unsigned a_addr = 2 ** (addr_bits - 1);
+  localparam unsigned b_addr = a_addr + 1;
+
 
   wire [addr_bits-1:0] addr = ui_in[addr_bits-1:0];
   wire wr_en = ui_in[7];
-  assign uio_oe  = 8'b0;  // All bidirectional IOs are inputs
-  assign uio_out = 8'b0;
 
-  reg [7:0] ram  [RAM_BYTES - 1:0];
-  reg [1:0] cntr;
+  reg [7:0] ram[RAM_BYTES - 1:0];
+  reg [result_addr_bits-1:0] result_addr;
 
   always @(posedge clk) begin
     if (!rst_n) begin
       uo_out <= 8'b0;
-      cntr   <= 0;
+      result_addr <= 0;
       for (int i = 0; i < RAM_BYTES; i++) begin
         ram[i] <= 8'b0;
       end
     end else begin
-      if (cntr != 3) cntr <= cntr + 1;
-      if (wr_en && addr[3] == 1) begin
+      result_addr <= result_addr + 1;
+      if (wr_en && (addr[addr_bits-1] == 1)) begin
         ram[addr] <= uio_in;
       end
       uo_out <= ram[addr];
 
-      ram[{cntr, 1'b0}] <= r[7:0];
-      ram[{cntr, 1'b1}] <= r[15:8];
+      if (ui_in[5]) {ram[{1'b0, result_addr, 1'b1}], ram[{1'b0, result_addr, 1'b0}]} <= r;
     end
   end
 
@@ -56,12 +63,13 @@ module tt_um_drum_goekce (
       .r(r)
   );
 
-  assign a = ram[16];
-  assign b = ram[17];
+  assign a = ram[a_addr];
+  assign b = ram[b_addr];
 
-  wire _unused_pins = &{ena, ui_in[5]};
-  assign uio_out = r[15:8];
-  assign uio_oe  = ui_in[6];
+  wire _unused_pins = &{ena};
+
+  assign uio_out = r[7:0];
+  assign uio_oe  = {8{ui_in[6]}};
 endmodule
 
 module drum (

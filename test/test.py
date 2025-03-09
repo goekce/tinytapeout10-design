@@ -17,24 +17,56 @@ async def test_project(dut):
     # Reset
     dut._log.info("Reset")
     dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
+
+    dut.tri_oe.value = 0
+    dut.wr_en.value = 0
+    dut.ram_in.value = 1
+    dut.addr.value = 8
+    dut.r_wr_en.value = 1
+
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 10)
+
+    dut._log.info("Test multiplier")
+
     dut.rst_n.value = 1
+    dut.wr_en.value = 1
+    await ClockCycles(dut.clk, 1)
 
-    dut._log.info("Test project behavior")
+    dut.ram_in.value = 2
+    dut.addr.value = 9
+    dut.wr_en.value = 1
+    await ClockCycles(dut.clk, 1)
 
-    # Set the input values you want to test
-    dut.ui_in.value = 20
-    dut.uio_in.value = 30
+    dut.wr_en.value = 0
 
-    # Wait for one clock cycle to see the output values
-    # await ClockCycles(dut.clk, 1)
+    for i in range(8):
+        dut.addr.value = i
+        await ClockCycles(dut.clk, 2)
 
-    # The following assersion is just an example of how to check the output values.
-    # Change it to match the actual expected output of your module:
-    # assert dut.uo_out.value == 50
+    dut.r_wr_en.value = 0
 
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+    for i in range(8):
+        dut.wr_en.value = 0
+        dut.addr.value = i
+        await ClockCycles(dut.clk, 2)
+        if i % 2 == 0:
+            assert dut.ram_out.value == 2
+        else:
+            assert dut.ram_out.value == 0
+
+    dut._log.info("input byte readback")
+    dut.addr.value = 8
+    await ClockCycles(dut.clk, 2)
+    assert dut.ram_out.value == 1
+
+    dut.addr.value = 9
+    await ClockCycles(dut.clk, 2)
+    assert dut.ram_out.value == 2
+
+    dut._log.info("tristate readback")
+    dut.tri_oe.value = 1
+    await ClockCycles(dut.clk, 1)
+
+    dut._log.info("end")
+    await ClockCycles(dut.clk, 20)

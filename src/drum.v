@@ -37,10 +37,9 @@ module tt_um_drum_goekce (
           ram[addr] <= uio_in;
         end
         uo_out <= ram[addr];
-      end else begin
-        ram[{cntr, 1'b0}] <= r[7:0];
-        ram[{cntr, 1'b1}] <= r[15:8];
       end
+      ram[{cntr, 1'b0}] <= r[7:0];
+      ram[{cntr, 1'b1}] <= r[15:8];
     end
   end
 

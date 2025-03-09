@@ -10,9 +10,9 @@ module tt_um_drum_goekce (
 );
 
   parameter unsigned k = 6;
-  parameter unsigned n = 7;
-  parameter unsigned m = 7;
-  parameter RAM_BYTES = 32;
+  parameter unsigned n = 8;
+  parameter unsigned m = 8;
+  parameter RAM_BYTES = 18;
   localparam addr_bits = $clog2(RAM_BYTES);
 
   wire [addr_bits-1:0] addr = ui_in[addr_bits-1:0];
@@ -32,11 +32,14 @@ module tt_um_drum_goekce (
       end
     end else begin
       if (cntr != 7) cntr <= cntr + 1;
-      if (addr[4] == 0) begin
-        if (wr_en) begin
+      //if (addr[4] == 1) begin
+        if (wr_en && addr[4] == 1) begin
           ram[addr] <= uio_in;
         end
         uo_out <= ram[addr];
+      //end else begin
+       // uo_out <= ram[addr];
+
       end
       ram[{cntr, 1'b0}] <= r[7:0];
       ram[{cntr, 1'b1}] <= r[15:8];
@@ -59,12 +62,12 @@ module tt_um_drum_goekce (
   );
 
   //assign uo_out = r;
-  assign a = ram[0][6:0];
-  assign b = ram[1][6:0];
+  assign a = ram[16];
+  assign b = ram[17];
 
   // avoid linter warning about unused pins:
   //wire _unused_pins = &{ena, clk, rst_n, uio_in};
-  wire _unused_pins = &{ena, ui_in[5], uio_in};
+  wire _unused_pins = &{ena, ui_in[5]};
   //assign uio_out = r[15:8];
   //assign uio_oe  = {8{ui_in[6]}};
   assign uio_out = 0;

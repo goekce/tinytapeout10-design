@@ -1,6 +1,6 @@
 module tt_um_drum_goekce (
     input  wire [7:0] ui_in,    // Dedicated inputs
-    output wire [7:0] uo_out,   // Dedicated outputs
+    output reg  [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
     output wire [7:0] uio_out,  // IOs: Output path
     output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
@@ -31,15 +31,15 @@ module tt_um_drum_goekce (
         ram[i] <= 8'b0;
       end
     end else begin
-      if (cntr != 14) cntr <= cntr + 2;
+      if (cntr != 7) cntr <= cntr + 1;
       if (addr[4] == 0) begin
         if (wr_en) begin
           ram[addr] <= uio_in;
         end
         uo_out <= ram[addr];
       end else begin
-        ram[cntr]   <= r[7:0];
-        ram[cntr+1] <= r[15:0];
+        ram[{cntr, 1'b0}] <= r[7:0];
+        ram[{cntr, 1'b1}] <= r[15:8];
       end
     end
   end
@@ -67,7 +67,7 @@ module tt_um_drum_goekce (
   //wire _unused_pins = &{ena, clk, rst_n, uio_in};
   wire _unused_pins = &{ena, uio_in[5]};
   assign uio_out = r[15:8];
-  assign uio_oe  = ui_in[6];
+  assign uio_oe  = {8{ui_in[6]}};
 
 endmodule  // tt_um_factory_test
 

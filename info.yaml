@@ -27,9 +27,9 @@ pinout:
   ui[2]: "addr[2]"
   ui[3]: "addr[3]"
   ui[4]: ""
-  ui[5]: ""
-  ui[6]: ""
-  ui[7]: "wr_en"
+  ui[5]: "result write enable"
+  ui[6]: "tristate output enable"
+  ui[7]: "RAM write enable"
 
   # Outputs
   uo[0]: "ram_out(0)"
@@ -42,14 +42,14 @@ pinout:
   uo[7]: "ram_out(7)"
 
   # Bidirectional pins
-  uio[0]: "ram_in(0)"
-  uio[1]: "ram_in(1)"
-  uio[2]: "ram_in(2)"
-  uio[3]: "ram_in(3)"
-  uio[4]: "ram_in(4)"
-  uio[5]: "ram_in(5)"
-  uio[6]: "ram_in(6)"
-  uio[7]: "ram_in(7)"
+  uio[0]: "ram_in(0) or result(0)"
+  uio[1]: "ram_in(1) or result(1)"
+  uio[2]: "ram_in(2) or result(2)"
+  uio[3]: "ram_in(3) or result(3)"
+  uio[4]: "ram_in(4) or result(4)"
+  uio[5]: "ram_in(5) or result(5)"
+  uio[6]: "ram_in(6) or result(6)"
+  uio[7]: "ram_in(7) or result(7)"
 
 # Do not change!
 yaml_version: 6

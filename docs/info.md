@@ -14,7 +14,12 @@ Approximate Applications by Hashemi et. al.
 
 ## How to test
 
-`r = a * b`. Write data to `a` and `b`. Then read the result/s from the RAM.
+`r = a * b`. Write data to `a` and `b`. Then read the result/s from the RAM. The product results should differ if the frequency is increased.
+
+Address map:
+- 0 to 7 => product result
+- 8 => multiplicand 1
+- 9 => multiplicand 2
 
 ## External hardware
 

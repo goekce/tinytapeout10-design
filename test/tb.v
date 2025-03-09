@@ -21,6 +21,9 @@ module tb ();
     assert (r == a * b);
 
   end
+  parameter unsigned k = 3;
+  parameter unsigned n = 4;
+  parameter unsigned m = 4;
 
   wire [(n-1):0] a;
   wire [(m-1):0] b;
@@ -41,7 +44,7 @@ module tb ();
 `endif
 
   // Replace tt_um_example with your module name:
-  tt_um_drum_goekce #(3, 4, 4) user_project (
+  tt_um_drum_goekce #(k, n, m) user_project (
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
       .VPWR(VPWR),

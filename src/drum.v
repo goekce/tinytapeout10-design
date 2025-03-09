@@ -10,8 +10,8 @@ module tt_um_drum_goekce (
 );
 
   parameter unsigned k = 6;
-  parameter unsigned n = 8;
-  parameter unsigned m = 8;
+  parameter unsigned n = 7;
+  parameter unsigned m = 7;
   parameter RAM_BYTES = 32;
   localparam addr_bits = $clog2(RAM_BYTES);
 
@@ -59,8 +59,8 @@ module tt_um_drum_goekce (
   );
 
   //assign uo_out = r;
-  assign a = ram[0];
-  assign b = ram[1];
+  assign a = ram[0][6:0];
+  assign b = ram[1][6:0];
 
   // avoid linter warning about unused pins:
   //wire _unused_pins = &{ena, clk, rst_n, uio_in};

@@ -12,6 +12,7 @@ module tt_um_drum_goekce (
   parameter unsigned k = 3;
   parameter unsigned n = 8;
   parameter unsigned m = 8;
+  parameter RAM_BYTES = 32;
   localparam addr_bits = $clog2(RAM_BYTES);
 
   wire [addr_bits-1:0] addr = ui_in[addr_bits-1:0];
